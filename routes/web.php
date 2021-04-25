@@ -13,9 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'HomeController@index')->name('home');
+Route::get('/contact', 'ContactController@index')->name('contact');
+Route::get('/login', 'AuthenticationController@index_login')->name('login');
+Route::get('/register', 'AuthenticationController@index_register')->name('register');
+Route::get('/logout', 'AuthenticationController@logout')->name('logout');
 
 
 Route::group(['prefix' => 'admin'], function () {
