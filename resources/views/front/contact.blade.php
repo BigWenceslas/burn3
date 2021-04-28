@@ -37,7 +37,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <label for="message">Message:</label><br>
-                        <textarea name="message" id="message" style="width: 100%;" cols="30" rows="10">
+                        <textarea name="lmessage" id="message" style="width: 100%;" cols="30" rows="10">
 
                         </textarea>
                     </div>
