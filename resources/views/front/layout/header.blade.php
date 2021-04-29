@@ -101,6 +101,7 @@
                                     <img width="32" height="32" class="rounded-circle" src="{{asset('template/assets/images/people/50/guy-3.jpg')}}" alt="student" />
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">
+                                    <h6 class="dropdown-header">Bienvenue {{ Auth::user()->name }}</h6>
                                     <h6 class="dropdown-header">Student</h6>
                                     <a class="dropdown-item {{ $page == "Dashboard" ? 'active' : '' }}" href="/">Dashboard</a>
                                     <a class="dropdown-item" href="student-my-courses.html">My Courses</a>

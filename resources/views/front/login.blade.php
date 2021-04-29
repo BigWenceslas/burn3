@@ -147,18 +147,19 @@
                 </div>
                 <div class="bg-white pt-32pt pt-sm-64pt pb-32pt">
                     <div class="container page__container">
-                        <form action="/" class="col-md-5 p-0 mx-auto" autocomplete="off">
+                        <form class="col-md-5 p-0 mx-auto form_login" autocomplete="off">
+                            @csrf
                             <div class="form-group">
                                 <label for="email">Email:</label>
-                                <input id="email" type="text" class="form-control" placeholder="Votre email ...">
+                                <input name="email" type="email" class="form-control" placeholder="Votre email ...">
                             </div>
                             <div class="form-group">
                                 <label for="password">Password:</label>
-                                <input id="password" type="password" class="form-control">
+                                <input name="password" type="password" class="form-control">
                                 <p class="text-right"><a href="/" class="small">Mot de passe oublié ?</a></p>
                             </div>
                             <div class="text-center">
-                                <button class="btn btn-lg btn-accent">Connexion</button>
+                                <button class="btn btn-lg btn-accent se_connecter">Connexion</button>
                             </div>
                         </form>
                     </div>
@@ -1009,8 +1010,62 @@
 
     <!-- Highlight.js -->
     <script src="{{asset('template/assets/js/hljs.js')}}"></script>
+    <script src="{{asset('template/assets/js/vanilla-toast-main/lib/vanilla-toast.min.js')}}"></script>
 
-
+    <script>
+        $(document).on("click", ".se_connecter", function(e){
+            e.preventDefault()
+            var texte_bouton = $(this).text()
+            var $form = $('.form_login');
+            var formdata = (window.FormData) ? new FormData($form[0]) : null;
+            var data = (formdata !== null) ? formdata : $form.serialize();
+            $(this).html("En cours")
+            $.ajax({
+                url: "{{ route('connexion') }}",
+                type: 'POST',
+                processData: false,
+                contentType: false,
+                data: data,
+                success: function(data) {
+                    $(this).html(texte_bouton);
+                    if (data.type == "error") {
+                        vt.error(data.message,{
+                            title: "Erreur !",
+                            position: "top-center",
+                            duration: 5000,
+                            closable: true,
+                            focusable: true,
+                            callback: undefined
+                        });
+                        $(this).html(texte_bouton);
+                    } else {
+                        vt.success(data.message,{
+                            title: "Succès !",
+                            position: "top-center",
+                            duration: 5000,
+                            closable: true,
+                            focusable: true,
+                            callback: undefined
+                        });
+                        $(this).html(texte_bouton);
+                        window.location.href = "/";
+                    }
+                },
+                error: function(error) {
+                    vt.error("Une erreur est survenue, veuillez reessayer plutard !",{
+                        title: "Erreur !",
+                        position: "top-center",
+                        duration: 5000,
+                        closable: true,
+                        focusable: true,
+                        callback: undefined
+                    });
+                    $(this).html(texte_bouton);
+                    console.log(error);
+                }
+            })
+        })
+    </script>
 
 
 </body>

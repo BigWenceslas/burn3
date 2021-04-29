@@ -45,8 +45,8 @@ class AuthenticationController extends Controller
     public function index_register()
     {
         $page = "Inscription";
-        // $categoriesProduits = $this->service->getCategoriesProduits();
-        return view('front.register',compact('page'));
+        $roles = $this->service->getRolesUser();
+        return view('front.register',compact('page','roles'));
     }
 
     public function redirectTo()
@@ -74,7 +74,7 @@ class AuthenticationController extends Controller
                     'subject'=>'Bienvenue sur BURN',
                     'name'=>$user->name,
                     'email'=>$user->email,
-                    'body'=>'Hello <strong>'.$user->name.'</strong> <br> <br> Bienvenue sur BURN, nous sommes ravis de vous compter parmi nos membres à travers le monde...'
+                    'body'=>'Hello <strong>'.$user->name.'</strong> <br> <br> Bienvenue sur BURN, nous sommes ravis de vous compter parmi nos membres à travers le monde... Activez votre compte en clique sur ce lien <a href="http://localhost:8000/activate-user/'.$user->id.'">Activation</a>'
                 )]);
                 $test = $this->emailing->sendEmail($data);
                 $result = array('type' => 'success', 'message'=>'Bienvenue sur BURN', 'data'=>$user);
@@ -96,21 +96,34 @@ class AuthenticationController extends Controller
         }
         
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            if (Auth::user()->role_id == 2) {
+            if (empty(Auth::user()->email_verified_at)) {
+                Auth::logout();
+                $request->session()->flush();
+                $request->session()->regenerate();
                 return response()->json([
-                    'success' => 'Login ok membre.'
+                    'message' => 'Identifiants invalides.',
+                    'type' => 'error'
                 ], 200);
             } else {
                 return response()->json([
-                    'success' => 'Login ok.'
+                    'type' => 'success',
+                    'message' => 'Bienvenue '.Auth::user()->name,
+                    'role_id' => Auth::user()->role_id
                 ], 200);
             }
         }else {
             $this->incrementLoginAttempts($request);
             return response()->json([
-                'error' => 'Identifiants invalides.'
+                'message' => 'Identifiants invalides.',
+                'type' => 'error'
             ], 200);
         }
+    }
+
+    public function activate_user($id) 
+    { 
+        $user = $this->service->activateUser($id);
+        return redirect()->route('login');
     }
 
     public function logout(Request $request)

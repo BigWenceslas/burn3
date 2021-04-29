@@ -2,7 +2,6 @@
 <html lang="en">
 
 
-<!-- Mirrored from learndash-bootstrap.frontendmatter.com/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 28 Jan 2019 00:32:48 GMT -->
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -127,78 +126,141 @@
                     </a>
                 </div>
             </div>
-            
-            <div class="py-32pt bg-white border-bottom-2">
-                <div class="container page__container">
-                    <div class="progression-bar progression-bar--active-accent">
-                        <a href="pricing.html" class="progression-bar__item progression-bar__item--complete">
-                            <span class="progression-bar__item-content">
-                                <i class="material-icons progression-bar__item-icon">done</i>
-                                <span class="progression-bar__item-text h5 mb-0 text-uppercase">Tableau des Prix</span>
-                            </span>
-                        </a>
-                        <a href="signup.html" class="progression-bar__item progression-bar__item--complete progression-bar__item--active">
-                            <span class="progression-bar__item-content">
-                                <i class="material-icons progression-bar__item-icon"></i>
-                                <span class="progression-bar__item-text h5 mb-0 text-uppercase">Détails du compte</span>
-                            </span>
-                        </a>
-                        <a href="signup-payment.html" class="progression-bar__item">
-                            <span class="progression-bar__item-content">
-                                <i class="material-icons progression-bar__item-icon"></i>
-                                <span class="progression-bar__item-text h5 mb-0 text-uppercase">Détails du paiement</span>
-                            </span>
-                        </a>
-                    </div>
-                </div>
-            </div>
 
             <div class="bg-white py-32pt py-lg-64pt">
                 <div class="container page__container">
                     <div class="col-lg-10 p-0 mx-auto">
-                        <div class="row">
-                            <div class="col-md-6 mb-24pt mb-md-0">
-                                <form action="http://learndash-bootstrap.frontendmatter.com/signup-payment.html">
+                        <form class="form_register" style="width: 100%;">
+                            @csrf
+                            <div class="row">
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="name">Nom complet:</label>
-                                        <input id="name" type="text" class="form-control" placeholder="Nom complet ...">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="email">Votre email:</label>
-                                        <input id="email" type="email" class="form-control" placeholder="Votre email ...">
-                                    </div>
-                                    <div class="form-group mb-24pt">
-                                        <label for="password">Mot de passe:</label>
-                                        <input id="password" type="password" class="form-control">
-                                    </div>
-                                    <button class="btn btn-lg btn-accent">Inscription</button>
-                                </form>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="card mb-0">
-                                    <div class="card-body">
-                                        <h5>Purchase summary</h5>
-                                        <div class="d-flex mb-8pt">
-                                            <div class="flex"><strong class="text-black-70">Subscription</strong></div>
-                                            <strong>Student</strong>
-                                        </div>
-                                        <div class="d-flex mb-16pt pb-16pt border-bottom">
-                                            <span class="material-icons text-muted mr-8pt">check</span>
-                                            <span class="text-black-70">Access to over 1.000 high quality courses. For individuals.</span>
-                                        </div>
-                                        <div class="d-flex mb-16pt pb-16pt border-bottom">
-                                            <div class="flex"><strong class="text-black-70">Price</strong></div>
-                                            <strong>US &dollar;9 per month</strong>
-                                        </div>
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" checked id="topic-all">
-                                            <label class="custom-control-label">Terms and conditions</label>
-                                            <small class="form-text text-muted">By checking here and continuing, I agree to the LearnDash Terms of Use</small>
-                                        </div>
+                                        <label for="name">Nom:</label>
+                                        <input name="name" type="text" class="form-control" placeholder="Votre Nom ...">
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="prenom">Prénom:</label>
+                                        <input name="prenom" type="text" class="form-control" placeholder="Votre Prénom...">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="email">Votre email:</label>
+                                        <input name="email" type="email" class="form-control" placeholder="Votre email...">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="tel">Téléphone:</label>
+                                        <input name="telephone" type="text" class="form-control" placeholder="Votre Téléphone...">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="dob">Date de naissance:</label>
+                                        <input name="date_naissance" type="date" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="ville">Ville:</label>
+                                        <input name="ville" type="text" class="form-control" placeholder="Votre Ville...">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="name">Type d'utilisateur:</label><br>
+                                        <select name="role_id" id="role_id" style="width: 100%;height: 2rem;">
+                                            @foreach ($roles as $item)
+                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mentor_coach_selected" style="width: 100%;margin: 0px 0.78rem;display:none;">
+                                    <h4>Expériences Professionnelles</h4>
+                                    <section class="list_experience">
+                                        <div class="row une_experience">
+                                            <div class="col-md-3">
+                                                <div class="form-group mb-24pt">
+                                                    <label for="debut">Date de début:</label>
+                                                    <input type="date" class="form-control" name="debut[]">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group mb-24pt">
+                                                    <label for="fin">Date de fin:</label>
+                                                    <input type="date" class="form-control" name="fin[]">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="form-group mb-24pt">
+                                                    <label for="description">Desription:</label>
+                                                    <input name="description[]" type="text" class="form-control" placeholder="Desription...">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1" style=" display: flex;justify-content: flex-end;align-items: center;">
+                                                <button class="btn btn-danger delete_experience" title="Retirer une expérience">
+                                                    <i class="fa fa-times"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </section>
+                                    <div class="row add_experience" style="margin: 0px;display: flex;justify-content: flex-end;">
+                                        <button class="btn btn-primary" title="Ajouter une expérience">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 entreprise_selected" style="display: none;">
+                                    <div class="form-group mb-24pt">
+                                        <label for="domaine">Domaine:</label>
+                                        <input name="domaine" type="text" class="form-control" placeholder="Votre Domaine...">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 entreprise_selected" style="display: none;">
+                                    <div class="form-group mb-24pt">
+                                        <label for="date_creation">Date de création:</label>
+                                        <input name="date_creation" type="date" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-4 entreprise_selected" style="display: none;">
+                                    <div class="form-group mb-24pt">
+                                        <label for="num_id">Numéro d'identifiant:</label>
+                                        <input name="num_id" type="text" class="form-control" placeholder="Numéro d'identifiant...">
+                                    </div>
+                                </div>
+                                <div class="col-md-4 entreprise_selected" style="display: none;">
+                                    <div class="form-group mb-24pt">
+                                        <label for="raison_sociale">Raison sociale:</label>
+                                        <input name="raison_sociale" type="text" class="form-control" placeholder="Votre Raison sociale...">
+                                    </div>
+                                </div>
+                                <div class="col-md-4 entreprise_selected" style="display: none;">
+                                    <div class="form-group mb-24pt">
+                                        <label for="boite_postale">Boite postale:</label>
+                                        <input name="boite_postale" type="text" class="form-control" placeholder="Votre Boite postale...">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-24pt">
+                                        <label for="password">Mot de passe:</label>
+                                        <input name="password" type="password" class="form-control pwd">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-24pt">
+                                        <label for="password">Confirmez votre mot de passe:</label>
+                                        <input type="password" class="form-control cpwd">
+                                    </div>
+                                </div>
+                                <div class="col-md-12" style="display: flex;justify-content:center;">
+                                    <button class="btn btn-lg btn-accent s_inscrire">S'inscrire</button>
+                                </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -1048,8 +1110,118 @@
 
     <!-- Highlight.js -->
     <script src="{{asset('template/assets/js/hljs.js')}}"></script>
+    <script src="{{asset('template/assets/js/vanilla-toast-main/lib/vanilla-toast.min.js')}}"></script>
 
-
+    <script>
+        $(document).on("click", ".add_experience", function(e){
+            e.preventDefault()
+            $('.list_experience').append(`<div class="row une_experience">
+                <div class="col-md-3">
+                    <div class="form-group mb-24pt">
+                        <label for="debut">Date de début:</label>
+                        <input type="date" class="form-control" name="debut[]">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group mb-24pt">
+                        <label for="fin">Date de fin:</label>
+                        <input type="date" class="form-control" name="fin[]">
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group mb-24pt">
+                        <label for="description">Desription:</label>
+                        <input name="description[]" type="text" class="form-control" placeholder="Desription...">
+                    </div>
+                </div>
+                <div class="col-md-1" style=" display: flex;justify-content: flex-end;align-items: center;">
+                    <button class="btn btn-danger delete_experience" title="Retirer une expérience">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+            </div>`);
+        })
+        $(document).on("click", ".delete_experience", function(e){
+            e.preventDefault()
+            $(this).parent().parent().remove()
+        })
+        $(document).on("change", "#role_id", function(e){
+            e.preventDefault()
+            if ($(this).find(':selected').val() == "4" || $(this).find(':selected').val() == "5") {
+                $(".entreprise_selected").hide(100);
+                $(".mentor_coach_selected").show(300);
+            }else if ($(this).find(':selected').val() == "6") {
+                $(".mentor_coach_selected").hide(100);
+                $(".entreprise_selected").show(300);
+            } else {
+                $(".mentor_coach_selected").hide(100);
+                $(".mentor_coach_selected").hide(100);
+            }
+        })
+        $(document).on("click", ".s_inscrire", function(e){
+            e.preventDefault()
+            var texte_bouton = $(this).text()
+            var $form = $('.form_register');
+            var formdata = (window.FormData) ? new FormData($form[0]) : null;
+            var data = (formdata !== null) ? formdata : $form.serialize();
+            $(this).html("En cours")
+            if ($('.pwd').val() == $('.cpwd').val()) {
+                $.ajax({
+                    url: "{{ route('signup') }}",
+                    type: 'POST',
+                    processData: false,
+                    contentType: false,
+                    data: data,
+                    success: function(data) {
+                        data = JSON.parse(data)
+                        $(this).html(texte_bouton);
+                        if (data.type == "error") {
+                            vt.error(data.message,{
+                                title: "Erreur !",
+                                position: "top-center",
+                                duration: 5000,
+                                closable: true,
+                                focusable: true,
+                                callback: undefined
+                            });
+                        } else {
+                            vt.success(data.message,{
+                                title: "Succès !",
+                                position: "top-center",
+                                duration: 5000,
+                                closable: true,
+                                focusable: true,
+                                callback: undefined
+                            });
+                            window.location.href = "{{ route('login') }}";
+                        }
+                    },
+                    error: function(error) {
+                        vt.error("Une erreur est survenue, veuillez reessayer plutard !",{
+                            title: "Erreur !",
+                            position: "top-center",
+                            duration: 5000,
+                            closable: true,
+                            focusable: true,
+                            callback: undefined
+                        });
+                        $(this).html(texte_bouton);
+                        console.log(error);
+                    }
+                })
+            }else{
+                $(this).html(texte_bouton);
+                vt.error("Vos mots de passe ne correspondent pas !",{
+                    title: "Erreur !",
+                    position: "top-center",
+                    duration: 5000,
+                    closable: true,
+                    focusable: true,
+                    callback: undefined
+                });
+            }
+        })
+    </script>
 
 
 </body>
