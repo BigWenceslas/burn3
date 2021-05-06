@@ -126,6 +126,56 @@ class AuthenticationController extends Controller
         return redirect()->route('login');
     }
 
+    public function verifyEmailResetPwd(Request $request)
+    {
+        $forgot = $this->service->verifyEmailResetPwd($request);
+        if (json_decode($forgot)->type != "error") {
+            $data = array('emails' => [0=>array(
+                'subject'=>'Reinitialisation de mot de passe',
+                'name'=>json_decode($forgot)->data[0]->name,
+                'email'=>json_decode($forgot)->data[0]->email,
+                'body'=>'
+                <td style="text-align: justify;">
+                    <div style="width:100%;display:flex;justify-content:center;align-items:center;margin-bottom: 3rem;text-align: center;">
+                        <img src="https://image.freepik.com/vecteurs-libre/logo-code-degrade-pour-developpeurs-web_23-2148830996.jpg" style="width:8rem;height:auto;">
+                    </div>
+                  <h1>Réinitialisation de mot de passe</h1>
+                  <h2>Hello <strong>'.json_decode($forgot)->data[0]->name.'</strong>, <br>
+                  Vous avez fait une demande de reinitialisation de mot de passe, si vous souhaitez continuer, veuiller cliquer sur le bouton ci-dessous</h2>
+                  <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
+                    <tbody>
+                      <tr>
+                        <td align="left">
+                          <table border="0" cellpadding="0" cellspacing="0">
+                            <tbody>
+                              <tr>
+                                <td> <a href="'.route('viewResetPwd',['id'=>json_decode($forgot)->data[0]->id]).'" target="_blank">Reinitialiser mon mot de passe</a> </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>'
+            )]);
+            $test = $this->emailing->sendEmail($data);
+        }
+        return $forgot;
+    }
+
+    public function viewResetPassword($id)
+    {
+        $page = "Réinitialiser mot de passe";
+        return view('front.reset',compact('page','id'));
+    }
+
+    public function ResetPassword(Request $request) 
+    { 
+        $user = $this->service->resetPassword($request);
+        return $user;
+    }
+
     public function logout(Request $request)
     {
         Auth::logout();

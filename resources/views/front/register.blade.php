@@ -52,7 +52,7 @@
                     <div class="container">
 
                         <!-- Navbar Brand -->
-                        <a href="index.html" class="navbar-brand">
+                        <a href="{{ route('home') }}" class="navbar-brand">
                             <img class="navbar-brand-icon" src="{{asset('template/assets/images/logo/white-100.svg')}}" width="30" alt="Bliss">
                             <span class="d-none d-md-block">Bliss</span>
                         </a>

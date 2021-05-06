@@ -66,7 +66,7 @@
                             <li class="nav-item">
                                 <a href="{{ route('register') }}" class="nav-link">Inscription</a>
                             </li>
-                            <li class="nav-item active">
+                            <li class="nav-item">
                                 <a href="{{ route('login') }}" class="nav-link">Connexion</a>
                             </li>
                         </ul>
@@ -97,13 +97,13 @@
                             <a href="{{ route('home') }}" class="nav-link">Accueil</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">A Propos</a>
+                            <a href="" class="nav-link">A Propos</a>
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">Formations</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">Blog</a>
+                            <a href="{{ route('blog') }}" class="nav-link">Blog</a>
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">Contact</a>
@@ -136,8 +136,8 @@
                     <div class="container d-flex flex-column flex-md-row align-items-center text-center text-md-left">
                         <img src="{{asset('template/assets/images/illustration/student/128/white.svg')}}" class="mr-md-32pt mb-32pt mb-md-0" alt="student">
                         <div class="flex mb-32pt mb-md-0">
-                            <h1 class="text-white mb-0">Connexion</h1>
-                            <p class="lead measure-lead text-white-50">Gestion du compte</p>
+                            <h1 class="text-white mb-0">Réinitialisation</h1>
+                            <p class="lead measure-lead text-white-50">Réinitialiser votre mot de passe</p>
                         </div>
                         <a href="{{ route('register') }}" class="btn btn-outline-white flex-column">
                             Vous n'avez pas de compte ?
@@ -147,19 +147,19 @@
                 </div>
                 <div class="bg-white pt-32pt pt-sm-64pt pb-32pt">
                     <div class="container page__container">
-                        <form class="col-md-5 p-0 mx-auto form_login" autocomplete="off">
+                        <form class="col-md-5 p-0 mx-auto form_reset" autocomplete="off">
                             @csrf
+                            <input type="hidden" name="id" value="{{ $id }}">
                             <div class="form-group">
-                                <label for="email">Email:</label>
-                                <input name="email" type="email" class="form-control" placeholder="Votre email ...">
+                                <label for="email">Nouveau mot de passe:</label>
+                                <input name="password" type="password" class="form-control password">
                             </div>
                             <div class="form-group">
-                                <label for="password">Password:</label>
-                                <input name="password" type="password" class="form-control">
-                                <p class="text-right"><a href="#" class="small reset_pwd">Mot de passe oublié ?</a></p>
+                                <label for="email">Confirmation du nouveau mot de passe:</label>
+                                <input type="password" class="form-control cpassword">
                             </div>
                             <div class="text-center">
-                                <button class="btn btn-lg btn-accent se_connecter">Connexion</button>
+                                <button class="btn btn-lg btn-accent se_connecter">Réinitialiser</button>
                             </div>
                         </form>
                     </div>
@@ -365,37 +365,6 @@
     </div>
     <!-- // END drawer -->
 
-    <!-- Modal Formation -->
-    <div class="modal" id="modal_reset_pwd" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle">Reinitialisation du mot de passe</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <form action="" class="resetpwdForm" style="width: 100%;">
-                            @csrf
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="">Email *</label>
-                                    <input type="email" class="form-control emailforgot" placeholder="Entrer votre email..." name="email">
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                    <button type="button" class="btn btn-primary forgot_pwd">Envoyer</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- jQuery -->
     <script src="{{asset('template/assets/vendor/jquery.min.js')}}"></script>
 
@@ -426,50 +395,58 @@
     <script src="{{asset('template/assets/js/vanilla-toast-main/lib/vanilla-toast.min.js')}}"></script>
 
     <script>
-        $(document).on("click", ".reset_pwd", function(e){
-            e.preventDefault()
-            $('#modal_reset_pwd').modal('show');
-            $('#modal_reset_pwd').addClass('show');
-        })
-        $('.forgot_pwd').on('click', function(e){
+        $('.se_connecter').on('click', function(e){
             e.preventDefault();
             
-            $('.forgot_pwd').prepend("<span class='spinner-grow spinner-grow-sm'></span>");
+            $('.se_connecter').prepend("<span class='spinner-grow spinner-grow-sm'></span>");
 
-            var $form = $('.resetpwdForm');
+            var $form = $('.form_reset');
             var formdata = (window.FormData) ? new FormData($form[0]) : null;
             var data = (formdata !== null) ? formdata : $form.serialize();
-            $.ajax({
-                url: "{{ route('verify_email_reset_pwd') }}",
-                type: 'POST',
-                processData: false,
-                contentType: false,
-                data: data,
-                success: function(data) {
-                    // console.log(data);
-                    data = JSON.parse(data);
-                    if (data.type == "success") {
-                        $('.spinner-grow').remove();
-                        vt.success(data.message,{
-                            title: undefined,
-                            position: "top-center",
-                            duration: 5000,
-                            closable: true,
-                            focusable: true,
-                            callback: undefined
-                        });
-                    }else if (data.type == "error") {
-                        $('.spinner-grow').remove();
-                        vt.error(data.message,{
-                            title: "Erreur !",
-                            position: "top-center",
-                            duration: 5000,
-                            closable: true,
-                            focusable: true,
-                            callback: undefined
-                        });
-                    }else {
-                        $('.spinner-grow').remove();
+            if ($('.password').val() == $('.cpassword').val()) {
+                $.ajax({
+                    url: "{{ route('reset_pwd') }}",
+                    type: 'POST',
+                    processData: false,
+                    contentType: false,
+                    data: data,
+                    success: function(data) {
+                        // console.log(data);
+                        data = JSON.parse(data);
+                        if (data.type == "success") {
+                            $('.spinner-grow').remove();
+                            vt.success(data.message,{
+                                title: undefined,
+                                position: "top-center",
+                                duration: 5000,
+                                closable: true,
+                                focusable: true,
+                                callback: undefined
+                            });
+                            window.location.href = "{{ route('login') }}";
+                        }else if (data.type == "error") {
+                            $('.spinner-grow').remove();
+                            vt.error(data.message,{
+                                title: "Erreur !",
+                                position: "top-center",
+                                duration: 5000,
+                                closable: true,
+                                focusable: true,
+                                callback: undefined
+                            });
+                        }else {
+                            $('.spinner-grow').remove();
+                            vt.error("Une erreur est survenue, veuillez reessayer plutard !",{
+                                title: "Erreur !",
+                                position: "top-center",
+                                duration: 5000,
+                                closable: true,
+                                focusable: true,
+                                callback: undefined
+                            });
+                        }
+                    },
+                    error: function(error) {
                         vt.error("Une erreur est survenue, veuillez reessayer plutard !",{
                             title: "Erreur !",
                             position: "top-center",
@@ -478,74 +455,22 @@
                             focusable: true,
                             callback: undefined
                         });
+                        $('.spinner-grow').remove();
+                        console.log(error);
                     }
-                },
-                error: function(error) {
-                    vt.error("Une erreur est survenue, veuillez reessayer plutard !",{
-                        title: "Erreur !",
-                        position: "top-center",
-                        duration: 5000,
-                        closable: true,
-                        focusable: true,
-                        callback: undefined
-                    });
-                    $('.spinner-grow').remove();
-                    console.log(error);
-                }
-            });
+                });
+            } else {
+                vt.error("Vos mots de passe ne correspondent pas !",{
+                    title: "Erreur !",
+                    position: "top-center",
+                    duration: 5000,
+                    closable: true,
+                    focusable: true,
+                    callback: undefined
+                });
+                $('.spinner-grow').remove();
+            }
         });
-        $(document).on("click", ".se_connecter", function(e){
-            e.preventDefault()
-            var texte_bouton = $(this).text()
-            var $form = $('.form_login');
-            var formdata = (window.FormData) ? new FormData($form[0]) : null;
-            var data = (formdata !== null) ? formdata : $form.serialize();
-            $(this).html("En cours")
-            $.ajax({
-                url: "{{ route('connexion') }}",
-                type: 'POST',
-                processData: false,
-                contentType: false,
-                data: data,
-                success: function(data) {
-                    $(this).html(texte_bouton);
-                    if (data.type == "error") {
-                        vt.error(data.message,{
-                            title: "Erreur !",
-                            position: "top-center",
-                            duration: 5000,
-                            closable: true,
-                            focusable: true,
-                            callback: undefined
-                        });
-                        $(this).html(texte_bouton);
-                    } else {
-                        vt.success(data.message,{
-                            title: "Succès !",
-                            position: "top-center",
-                            duration: 5000,
-                            closable: true,
-                            focusable: true,
-                            callback: undefined
-                        });
-                        $(this).html(texte_bouton);
-                        window.location.href = "/";
-                    }
-                },
-                error: function(error) {
-                    vt.error("Une erreur est survenue, veuillez reessayer plutard !",{
-                        title: "Erreur !",
-                        position: "top-center",
-                        duration: 5000,
-                        closable: true,
-                        focusable: true,
-                        callback: undefined
-                    });
-                    $(this).html(texte_bouton);
-                    console.log(error);
-                }
-            })
-        })
     </script>
 
 

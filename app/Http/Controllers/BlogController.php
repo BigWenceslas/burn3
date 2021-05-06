@@ -7,7 +7,7 @@ use App\Service\EmailService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class ContactController extends Controller
+class BlogController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -30,16 +30,24 @@ class ContactController extends Controller
 
     public function index()
     {
-        $page = "Contact";
-        return view('front.contact',compact('page'));
+        $page = "Blog";
+        $articles = $this->service->getArticles();
+        return view('front.blog.index',compact('page','articles'));
     }
 
-    public function ContactUs(Request $request) 
+    public function details($slug)
+    {
+        $page = "Blog";
+        $article = $this->service->getDetailsArticles($slug);
+        return view('front.blog.details',compact('page','article'));
+    }
+
+    public function Comment(Request $request) 
     { 
-        $contact = $this->service->ContactUs($request);
+        $contact = $this->service->Comment($request);
         if (json_decode($contact)->type != "error") {
             $data = array('emails' => [0=>array(
-                'subject'=>'Merci de nous avoir contacté',
+                'subject'=>'Article commenté',
                 'name'=>json_decode($contact)->data->nom,
                 'email'=>json_decode($contact)->data->email,
                 'body'=>'
@@ -49,13 +57,13 @@ class ContactController extends Controller
                     </div>
                   <h1>Merci de nous avoir contacté</h1>
                   <h2>Hello <strong>'.json_decode($contact)->data->nom.'</strong>, <br>
-                  Nous vous remercions d\'avoir pris contact avec nous, un de nos agents vous répondra dans quelques instants.</h2>
+                  Votre commentaire a bien été envoyé pour l\'article <a href="http://localhost:8000/blog/'.json_decode($contact)->data->article_slug.'">'.json_decode($contact)->data->article.'</a></h2>
                 </td>'
             )]);
             $test = $this->emailing->sendEmail($data);
             $data1 = array('emails' => [0=>array(
-                'subject'=>'Un nouveau message de contact',
-                'name'=>json_decode($contact)->data->nom,
+                'subject'=>'Un nouveau commentaire dans le blog',
+                'name'=>json_decode($contact)->data->name,
                 'email'=>"drthugsteph@gmail.com",
                 'body'=>'
                 <td style="text-align: justify;">
@@ -64,10 +72,10 @@ class ContactController extends Controller
                     </div>
                   <h1>Un nouveau message de contact</h1>
                   <h2>Hello <strong>Admin</strong>, <br>
-                  Vous venez de recevoir une nouvelle demande de contact dont voici les détails: <br>
-                  Nom: <strong>'.json_decode($contact)->data->nom.'</strong>, <br>
+                  Vous venez de recevoir un nouveau commentaire dans le blog sur l\'article <a href="http://localhost:8000/blog/'.json_decode($contact)->data->article_slug.'">'.json_decode($contact)->data->article.'</a> dont voici les détails: <br>
+                  Nom: <strong>'.json_decode($contact)->data->name.'</strong>, <br>
                   Email: <strong>'.json_decode($contact)->data->email.'</strong>, <br>
-                  Message: '.json_decode($contact)->data->message.', <br></h2>
+                  Commentaire: '.json_decode($contact)->data->comment.', <br></h2>
                 </td>'
             )]);
             $test1 = $this->emailing->sendEmail($data1);

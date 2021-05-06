@@ -111,7 +111,7 @@
                                     <a class="dropdown-item" href="student-edit-account.html">Edit Account</a>
                                     <a class="dropdown-item" href="student-billing.html">Billing</a>
                                     <a class="dropdown-item" href="student-billing-history.html">Payments</a>
-                                    <a class="dropdown-item" href="{{route('logout')}}">Logout</a>
+                                    <a class="dropdown-item" href="{{route('logout')}}">Logout &nbsp;&nbsp;<i class="fa fa-power-off"></i></a>
 
 
                                 </div>
@@ -145,7 +145,7 @@
                             <a href="#" class="nav-link">Formations</a>
                         </li>
                         <li class="nav-item {{ $page == "Blog" ? 'active' : '' }}">
-                            <a href="#" class="nav-link">Blog</a>
+                            <a href="{{ route('blog') }}" class="nav-link">Blog</a>
                         </li>
                         <li class="nav-item {{ $page == "Contact" ? 'active' : '' }}">
                             <a href="{{route('contact')}}" class="nav-link">Contact</a>
@@ -1012,6 +1012,7 @@
 
     <!-- Highlight.js -->
     <script src="{{asset('template/assets/js/hljs.js')}}"></script>
+    <script src="{{asset('template/assets/js/vanilla-toast-main/lib/vanilla-toast.min.js')}}"></script>
 
     @stack('script')
 </body>
