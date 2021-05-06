@@ -1,24 +1,17 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 4.9.7
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1:3306
--- Généré le : sam. 24 avr. 2021 à 22:50
--- Version du serveur :  5.7.31
--- Version de PHP : 7.3.21
+-- Hôte : localhost:8889
+-- Généré le : jeu. 06 mai 2021 à 06:58
+-- Version du serveur :  5.7.32
+-- Version de PHP : 7.4.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
 SET time_zone = "+00:00";
 
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
 --
--- Base de données : `burn3`
+-- Base de données : `burn`
 --
 
 -- --------------------------------------------------------
@@ -27,9 +20,8 @@ SET time_zone = "+00:00";
 -- Structure de la table `articles`
 --
 
-DROP TABLE IF EXISTS `articles`;
-CREATE TABLE IF NOT EXISTS `articles` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `articles` (
+  `id` int(10) UNSIGNED NOT NULL,
   `nom` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -39,16 +31,15 @@ CREATE TABLE IF NOT EXISTS `articles` (
   `categorie_id` int(11) DEFAULT NULL,
   `etat` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'moderation',
   `slug` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `image` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `image` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `articles`
 --
 
 INSERT INTO `articles` (`id`, `nom`, `created_at`, `updated_at`, `contenu`, `vues`, `user_id`, `categorie_id`, `etat`, `slug`, `image`) VALUES
-(2, '1gfhfhrfghfgh', '2021-04-24 20:33:00', '2021-04-24 20:47:49', '<p>qweqwe</p>', NULL, 1, 1, 'publish', '1gfhfhrfghfgh', 'articles\\April2021\\XqAB4ldqAnPtIT8egXUO.jpg');
+(2, 'Un article de test aussi comme ca', '2021-04-24 20:33:00', '2021-05-06 04:40:35', '<p>qweqwe</p>', NULL, 1, 1, 'publish', 'un-article-de-test-aussi-comme-ca', 'articles/May2021/j1HnasVKnhN7aRA7DYQT.png');
 
 -- --------------------------------------------------------
 
@@ -56,17 +47,15 @@ INSERT INTO `articles` (`id`, `nom`, `created_at`, `updated_at`, `contenu`, `vue
 -- Structure de la table `categories_blogs`
 --
 
-DROP TABLE IF EXISTS `categories_blogs`;
-CREATE TABLE IF NOT EXISTS `categories_blogs` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `categories_blogs` (
+  `id` int(10) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `nom` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` text COLLATE utf8mb4_unicode_ci,
   `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `slug` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `slug` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `categories_blogs`
@@ -78,12 +67,42 @@ INSERT INTO `categories_blogs` (`id`, `created_at`, `updated_at`, `nom`, `descri
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `comments`
+--
+
+CREATE TABLE `comments` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `comment` text COLLATE utf8mb4_unicode_ci,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `article_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `contactform`
+--
+
+CREATE TABLE `contactform` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `nom` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `message` text COLLATE utf8mb4_unicode_ci,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `data_rows`
 --
 
-DROP TABLE IF EXISTS `data_rows`;
-CREATE TABLE IF NOT EXISTS `data_rows` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `data_rows` (
+  `id` int(10) UNSIGNED NOT NULL,
   `data_type_id` int(10) UNSIGNED NOT NULL,
   `field` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -95,10 +114,8 @@ CREATE TABLE IF NOT EXISTS `data_rows` (
   `add` tinyint(1) NOT NULL DEFAULT '1',
   `delete` tinyint(1) NOT NULL DEFAULT '1',
   `details` text COLLATE utf8mb4_unicode_ci,
-  `order` int(11) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`),
-  KEY `data_rows_data_type_id_foreign` (`data_type_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `order` int(11) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `data_rows`
@@ -145,7 +162,21 @@ INSERT INTO `data_rows` (`id`, `data_type_id`, `field`, `type`, `display_name`, 
 (50, 6, 'article_belongsto_user_relationship', 'relationship', 'users', 0, 1, 1, 1, 1, 1, '{\"model\":\"App\\\\User\",\"table\":\"users\",\"type\":\"belongsTo\",\"column\":\"user_id\",\"key\":\"id\",\"label\":\"name\",\"pivot_table\":\"articles\",\"pivot\":\"0\",\"taggable\":\"0\"}', 11),
 (51, 6, 'article_belongsto_categories_blog_relationship', 'relationship', 'categories_blogs', 0, 1, 1, 1, 1, 1, '{\"model\":\"App\\\\CategoriesBlog\",\"table\":\"categories_blogs\",\"type\":\"belongsTo\",\"column\":\"categorie_id\",\"key\":\"id\",\"label\":\"nom\",\"pivot_table\":\"articles\",\"pivot\":\"0\",\"taggable\":\"0\"}', 13),
 (52, 6, 'slug', 'text', 'Slug', 1, 1, 1, 1, 1, 1, '{\"slugify\":{\"origin\":\"nom\",\"forceUpdate\":true}}', 12),
-(53, 6, 'image', 'image', 'Image', 1, 1, 1, 1, 1, 1, '{}', 3);
+(53, 6, 'image', 'image', 'Image', 1, 1, 1, 1, 1, 1, '{}', 3),
+(54, 7, 'id', 'text', 'Id', 1, 0, 0, 0, 0, 0, '{}', 1),
+(55, 7, 'nom', 'text', 'Nom', 0, 1, 1, 1, 1, 1, '{}', 2),
+(56, 7, 'email', 'text', 'Email', 0, 1, 1, 1, 1, 1, '{}', 3),
+(57, 7, 'message', 'markdown_editor', 'Message', 0, 1, 1, 1, 1, 1, '{}', 4),
+(58, 7, 'created_at', 'timestamp', 'Created At', 0, 1, 1, 1, 0, 1, '{}', 5),
+(59, 7, 'updated_at', 'timestamp', 'Updated At', 0, 0, 0, 0, 0, 0, '{}', 6),
+(60, 8, 'id', 'text', 'Id', 1, 0, 0, 0, 0, 0, '{}', 1),
+(61, 8, 'name', 'text', 'Name', 0, 1, 1, 1, 1, 1, '{}', 2),
+(62, 8, 'email', 'text', 'Email', 0, 1, 1, 1, 1, 1, '{}', 3),
+(63, 8, 'comment', 'markdown_editor', 'Comment', 0, 1, 1, 1, 1, 1, '{}', 4),
+(64, 8, 'created_at', 'timestamp', 'Created At', 0, 1, 1, 1, 0, 1, '{}', 5),
+(65, 8, 'updated_at', 'timestamp', 'Updated At', 0, 0, 0, 0, 0, 0, '{}', 6),
+(66, 8, 'article_id', 'text', 'Article', 0, 1, 1, 1, 1, 1, '{}', 7),
+(67, 8, 'comment_belongsto_article_relationship', 'relationship', 'articles', 0, 1, 1, 1, 1, 1, '{\"model\":\"App\\\\Article\",\"table\":\"articles\",\"type\":\"belongsTo\",\"column\":\"article_id\",\"key\":\"id\",\"label\":\"nom\",\"pivot_table\":\"articles\",\"pivot\":\"0\",\"taggable\":null}', 8);
 
 -- --------------------------------------------------------
 
@@ -153,9 +184,8 @@ INSERT INTO `data_rows` (`id`, `data_type_id`, `field`, `type`, `display_name`, 
 -- Structure de la table `data_types`
 --
 
-DROP TABLE IF EXISTS `data_types`;
-CREATE TABLE IF NOT EXISTS `data_types` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `data_types` (
+  `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `slug` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `display_name_singular` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -169,11 +199,8 @@ CREATE TABLE IF NOT EXISTS `data_types` (
   `server_side` tinyint(4) NOT NULL DEFAULT '0',
   `details` text COLLATE utf8mb4_unicode_ci,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `data_types_name_unique` (`name`),
-  UNIQUE KEY `data_types_slug_unique` (`slug`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `data_types`
@@ -184,7 +211,9 @@ INSERT INTO `data_types` (`id`, `name`, `slug`, `display_name_singular`, `displa
 (2, 'menus', 'menus', 'Menu', 'Menus', 'voyager-list', 'TCG\\Voyager\\Models\\Menu', NULL, '', '', 1, 0, NULL, '2021-04-21 19:25:16', '2021-04-21 19:25:16'),
 (3, 'roles', 'roles', 'Role', 'Roles', 'voyager-lock', 'TCG\\Voyager\\Models\\Role', NULL, 'TCG\\Voyager\\Http\\Controllers\\VoyagerRoleController', '', 1, 0, NULL, '2021-04-21 19:25:16', '2021-04-21 19:25:16'),
 (5, 'categories_blogs', 'categories-blogs', 'Categories Blog', 'Categories Blogs', NULL, 'App\\CategoriesBlog', NULL, NULL, NULL, 1, 0, '{\"order_column\":null,\"order_display_column\":null,\"order_direction\":\"asc\",\"default_search_key\":null}', '2021-04-24 20:17:07', '2021-04-24 20:17:07'),
-(6, 'articles', 'articles', 'Article', 'Articles', 'voyager-documentation', 'App\\Article', NULL, NULL, NULL, 1, 0, '{\"order_column\":\"id\",\"order_display_column\":null,\"order_direction\":\"desc\",\"default_search_key\":null,\"scope\":null}', '2021-04-24 20:36:04', '2021-04-24 20:45:58');
+(6, 'articles', 'articles', 'Article', 'Articles', 'voyager-documentation', 'App\\Article', NULL, NULL, NULL, 1, 0, '{\"order_column\":\"id\",\"order_display_column\":null,\"order_direction\":\"desc\",\"default_search_key\":null,\"scope\":null}', '2021-04-24 20:36:04', '2021-04-24 20:45:58'),
+(7, 'contactform', 'contactform', 'Contact', 'Contact', 'voyager-window-list', 'App\\Contactform', NULL, NULL, NULL, 1, 0, '{\"order_column\":null,\"order_display_column\":null,\"order_direction\":\"asc\",\"default_search_key\":null,\"scope\":null}', '2021-05-06 04:30:40', '2021-05-06 04:31:19'),
+(8, 'comments', 'comments', 'Commentaire', 'Commentaires', 'voyager-chat', 'App\\Comment', NULL, NULL, NULL, 1, 0, '{\"order_column\":null,\"order_display_column\":null,\"order_direction\":\"asc\",\"default_search_key\":null}', '2021-05-06 05:43:50', '2021-05-06 05:43:50');
 
 -- --------------------------------------------------------
 
@@ -192,15 +221,13 @@ INSERT INTO `data_types` (`id`, `name`, `slug`, `display_name_singular`, `displa
 -- Structure de la table `failed_jobs`
 --
 
-DROP TABLE IF EXISTS `failed_jobs`;
-CREATE TABLE IF NOT EXISTS `failed_jobs` (
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `failed_jobs` (
+  `id` bigint(20) UNSIGNED NOT NULL,
   `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
+  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -209,15 +236,12 @@ CREATE TABLE IF NOT EXISTS `failed_jobs` (
 -- Structure de la table `menus`
 --
 
-DROP TABLE IF EXISTS `menus`;
-CREATE TABLE IF NOT EXISTS `menus` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `menus` (
+  `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `menus_name_unique` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `menus`
@@ -232,9 +256,8 @@ INSERT INTO `menus` (`id`, `name`, `created_at`, `updated_at`) VALUES
 -- Structure de la table `menu_items`
 --
 
-DROP TABLE IF EXISTS `menu_items`;
-CREATE TABLE IF NOT EXISTS `menu_items` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `menu_items` (
+  `id` int(10) UNSIGNED NOT NULL,
   `menu_id` int(10) UNSIGNED DEFAULT NULL,
   `title` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `url` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -246,10 +269,8 @@ CREATE TABLE IF NOT EXISTS `menu_items` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `route` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `parameters` text COLLATE utf8mb4_unicode_ci,
-  PRIMARY KEY (`id`),
-  KEY `menu_items_menu_id_foreign` (`menu_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `parameters` text COLLATE utf8mb4_unicode_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `menu_items`
@@ -260,7 +281,7 @@ INSERT INTO `menu_items` (`id`, `menu_id`, `title`, `url`, `target`, `icon_class
 (2, 1, 'Media', '', '_self', 'voyager-images', NULL, 5, 7, '2021-04-21 19:25:16', '2021-04-24 18:13:12', 'voyager.media.index', NULL),
 (3, 1, 'Users', '', '_self', 'voyager-person', NULL, 12, 1, '2021-04-21 19:25:16', '2021-04-24 18:12:50', 'voyager.users.index', NULL),
 (4, 1, 'Roles', '', '_self', 'voyager-lock', NULL, 12, 2, '2021-04-21 19:25:16', '2021-04-24 18:12:51', 'voyager.roles.index', NULL),
-(5, 1, 'Tools', '', '_self', 'voyager-tools', NULL, NULL, 4, '2021-04-21 19:25:16', '2021-04-24 20:24:39', NULL, NULL),
+(5, 1, 'Tools', '', '_self', 'voyager-tools', NULL, NULL, 6, '2021-04-21 19:25:16', '2021-05-06 05:45:48', NULL, NULL),
 (6, 1, 'Menu Builder', '', '_self', 'voyager-list', NULL, 5, 1, '2021-04-21 19:25:16', '2021-04-24 18:12:46', 'voyager.menus.index', NULL),
 (7, 1, 'Database', '', '_self', 'voyager-data', NULL, 5, 2, '2021-04-21 19:25:16', '2021-04-24 18:12:46', 'voyager.database.index', NULL),
 (8, 1, 'Compass', '', '_self', 'voyager-compass', NULL, 5, 3, '2021-04-21 19:25:16', '2021-04-24 18:12:46', 'voyager.compass.index', NULL),
@@ -270,7 +291,9 @@ INSERT INTO `menu_items` (`id`, `menu_id`, `title`, `url`, `target`, `icon_class
 (12, 1, 'Gestion des Utilisateurs', '', '_self', 'voyager-people', '#000000', NULL, 2, '2021-04-24 18:12:40', '2021-04-24 18:12:46', NULL, ''),
 (14, 1, 'Categories Blogs', '', '_self', 'voyager-categories', '#000000', 15, 1, '2021-04-24 20:17:07', '2021-04-24 20:25:33', 'voyager.categories-blogs.index', 'null'),
 (15, 1, 'Blog', '', '_self', 'voyager-logbook', '#000000', NULL, 3, '2021-04-24 20:24:30', '2021-04-24 20:24:48', NULL, ''),
-(16, 1, 'Articles', '', '_self', 'voyager-documentation', NULL, 15, 2, '2021-04-24 20:36:04', '2021-04-24 20:46:14', 'voyager.articles.index', NULL);
+(16, 1, 'Articles', '', '_self', 'voyager-documentation', NULL, 15, 2, '2021-04-24 20:36:04', '2021-04-24 20:46:14', 'voyager.articles.index', NULL),
+(17, 1, 'Contact', '', '_self', 'voyager-window-list', '#000000', NULL, 4, '2021-05-06 04:30:40', '2021-05-06 04:32:19', 'voyager.contactform.index', 'null'),
+(18, 1, 'Commentaires', '', '_self', 'voyager-chat', NULL, NULL, 5, '2021-05-06 05:43:50', '2021-05-06 05:45:48', 'voyager.comments.index', NULL);
 
 -- --------------------------------------------------------
 
@@ -278,13 +301,11 @@ INSERT INTO `menu_items` (`id`, `menu_id`, `title`, `url`, `target`, `icon_class
 -- Structure de la table `migrations`
 --
 
-DROP TABLE IF EXISTS `migrations`;
-CREATE TABLE IF NOT EXISTS `migrations` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `migrations` (
+  `id` int(10) UNSIGNED NOT NULL,
   `migration` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `batch` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `batch` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `migrations`
@@ -320,16 +341,13 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 -- Structure de la table `permissions`
 --
 
-DROP TABLE IF EXISTS `permissions`;
-CREATE TABLE IF NOT EXISTS `permissions` (
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `permissions` (
+  `id` bigint(20) UNSIGNED NOT NULL,
   `key` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `table_name` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `permissions_key_index` (`key`)
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `permissions`
@@ -371,7 +389,17 @@ INSERT INTO `permissions` (`id`, `key`, `table_name`, `created_at`, `updated_at`
 (38, 'read_articles', 'articles', '2021-04-24 20:36:04', '2021-04-24 20:36:04'),
 (39, 'edit_articles', 'articles', '2021-04-24 20:36:04', '2021-04-24 20:36:04'),
 (40, 'add_articles', 'articles', '2021-04-24 20:36:04', '2021-04-24 20:36:04'),
-(41, 'delete_articles', 'articles', '2021-04-24 20:36:04', '2021-04-24 20:36:04');
+(41, 'delete_articles', 'articles', '2021-04-24 20:36:04', '2021-04-24 20:36:04'),
+(42, 'browse_contactform', 'contactform', '2021-05-06 04:30:40', '2021-05-06 04:30:40'),
+(43, 'read_contactform', 'contactform', '2021-05-06 04:30:40', '2021-05-06 04:30:40'),
+(44, 'edit_contactform', 'contactform', '2021-05-06 04:30:40', '2021-05-06 04:30:40'),
+(45, 'add_contactform', 'contactform', '2021-05-06 04:30:40', '2021-05-06 04:30:40'),
+(46, 'delete_contactform', 'contactform', '2021-05-06 04:30:40', '2021-05-06 04:30:40'),
+(47, 'browse_comments', 'comments', '2021-05-06 05:43:50', '2021-05-06 05:43:50'),
+(48, 'read_comments', 'comments', '2021-05-06 05:43:50', '2021-05-06 05:43:50'),
+(49, 'edit_comments', 'comments', '2021-05-06 05:43:50', '2021-05-06 05:43:50'),
+(50, 'add_comments', 'comments', '2021-05-06 05:43:50', '2021-05-06 05:43:50'),
+(51, 'delete_comments', 'comments', '2021-05-06 05:43:50', '2021-05-06 05:43:50');
 
 -- --------------------------------------------------------
 
@@ -379,13 +407,9 @@ INSERT INTO `permissions` (`id`, `key`, `table_name`, `created_at`, `updated_at`
 -- Structure de la table `permission_role`
 --
 
-DROP TABLE IF EXISTS `permission_role`;
-CREATE TABLE IF NOT EXISTS `permission_role` (
+CREATE TABLE `permission_role` (
   `permission_id` bigint(20) UNSIGNED NOT NULL,
-  `role_id` bigint(20) UNSIGNED NOT NULL,
-  PRIMARY KEY (`permission_id`,`role_id`),
-  KEY `permission_role_permission_id_index` (`permission_id`),
-  KEY `permission_role_role_id_index` (`role_id`)
+  `role_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -428,7 +452,17 @@ INSERT INTO `permission_role` (`permission_id`, `role_id`) VALUES
 (38, 1),
 (39, 1),
 (40, 1),
-(41, 1);
+(41, 1),
+(42, 1),
+(43, 1),
+(44, 1),
+(45, 1),
+(46, 1),
+(47, 1),
+(48, 1),
+(49, 1),
+(50, 1),
+(51, 1);
 
 -- --------------------------------------------------------
 
@@ -436,16 +470,13 @@ INSERT INTO `permission_role` (`permission_id`, `role_id`) VALUES
 -- Structure de la table `roles`
 --
 
-DROP TABLE IF EXISTS `roles`;
-CREATE TABLE IF NOT EXISTS `roles` (
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `roles` (
+  `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `display_name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `roles_name_unique` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `roles`
@@ -453,7 +484,11 @@ CREATE TABLE IF NOT EXISTS `roles` (
 
 INSERT INTO `roles` (`id`, `name`, `display_name`, `created_at`, `updated_at`) VALUES
 (1, 'admin', 'Administrator', '2021-04-21 19:25:16', '2021-04-21 19:25:16'),
-(2, 'user', 'Normal User', '2021-04-21 19:25:16', '2021-04-21 19:25:16');
+(2, 'user', 'Normal User', '2021-04-21 19:25:16', '2021-04-21 19:25:16'),
+(3, 'Etudiant', 'Etudiant', '2021-05-06 04:27:15', '2021-05-06 04:27:15'),
+(4, 'Mentor', 'Mentor', '2021-05-06 04:27:28', '2021-05-06 04:27:28'),
+(5, 'Coach', 'Coach', '2021-05-06 04:27:38', '2021-05-06 04:27:38'),
+(6, 'Entreprise', 'Entreprise', '2021-05-06 04:27:48', '2021-05-06 04:27:48');
 
 -- --------------------------------------------------------
 
@@ -461,19 +496,16 @@ INSERT INTO `roles` (`id`, `name`, `display_name`, `created_at`, `updated_at`) V
 -- Structure de la table `settings`
 --
 
-DROP TABLE IF EXISTS `settings`;
-CREATE TABLE IF NOT EXISTS `settings` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `settings` (
+  `id` int(10) UNSIGNED NOT NULL,
   `key` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `display_name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `value` text COLLATE utf8mb4_unicode_ci,
   `details` text COLLATE utf8mb4_unicode_ci,
   `type` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `order` int(11) NOT NULL DEFAULT '1',
-  `group` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `settings_key_unique` (`key`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `group` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `settings`
@@ -497,18 +529,15 @@ INSERT INTO `settings` (`id`, `key`, `display_name`, `value`, `details`, `type`,
 -- Structure de la table `translations`
 --
 
-DROP TABLE IF EXISTS `translations`;
-CREATE TABLE IF NOT EXISTS `translations` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `translations` (
+  `id` int(10) UNSIGNED NOT NULL,
   `table_name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `column_name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `foreign_key` int(10) UNSIGNED NOT NULL,
   `locale` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `value` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `translations_table_name_column_name_foreign_key_locale_unique` (`table_name`,`column_name`,`foreign_key`,`locale`)
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -517,9 +546,8 @@ CREATE TABLE IF NOT EXISTS `translations` (
 -- Structure de la table `users`
 --
 
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `users` (
+  `id` bigint(20) UNSIGNED NOT NULL,
   `role_id` bigint(20) UNSIGNED DEFAULT NULL,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -529,11 +557,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `settings` text COLLATE utf8mb4_unicode_ci,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `users_email_unique` (`email`),
-  KEY `users_role_id_foreign` (`role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `users`
@@ -548,13 +573,11 @@ INSERT INTO `users` (`id`, `role_id`, `name`, `email`, `avatar`, `email_verified
 -- Structure de la table `user_metas`
 --
 
-DROP TABLE IF EXISTS `user_metas`;
-CREATE TABLE IF NOT EXISTS `user_metas` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `user_metas` (
+  `id` int(10) UNSIGNED NOT NULL,
   `cle` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `valeur` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `user_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
+  `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -563,14 +586,237 @@ CREATE TABLE IF NOT EXISTS `user_metas` (
 -- Structure de la table `user_roles`
 --
 
-DROP TABLE IF EXISTS `user_roles`;
-CREATE TABLE IF NOT EXISTS `user_roles` (
+CREATE TABLE `user_roles` (
   `user_id` bigint(20) UNSIGNED NOT NULL,
-  `role_id` bigint(20) UNSIGNED NOT NULL,
-  PRIMARY KEY (`user_id`,`role_id`),
-  KEY `user_roles_user_id_index` (`user_id`),
-  KEY `user_roles_role_id_index` (`role_id`)
+  `role_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Index pour les tables déchargées
+--
+
+--
+-- Index pour la table `articles`
+--
+ALTER TABLE `articles`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `categories_blogs`
+--
+ALTER TABLE `categories_blogs`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `comments`
+--
+ALTER TABLE `comments`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `contactform`
+--
+ALTER TABLE `contactform`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `data_rows`
+--
+ALTER TABLE `data_rows`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `data_rows_data_type_id_foreign` (`data_type_id`);
+
+--
+-- Index pour la table `data_types`
+--
+ALTER TABLE `data_types`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `data_types_name_unique` (`name`),
+  ADD UNIQUE KEY `data_types_slug_unique` (`slug`);
+
+--
+-- Index pour la table `failed_jobs`
+--
+ALTER TABLE `failed_jobs`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `menus`
+--
+ALTER TABLE `menus`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `menus_name_unique` (`name`);
+
+--
+-- Index pour la table `menu_items`
+--
+ALTER TABLE `menu_items`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `menu_items_menu_id_foreign` (`menu_id`);
+
+--
+-- Index pour la table `migrations`
+--
+ALTER TABLE `migrations`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `permissions`
+--
+ALTER TABLE `permissions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `permissions_key_index` (`key`);
+
+--
+-- Index pour la table `permission_role`
+--
+ALTER TABLE `permission_role`
+  ADD PRIMARY KEY (`permission_id`,`role_id`),
+  ADD KEY `permission_role_permission_id_index` (`permission_id`),
+  ADD KEY `permission_role_role_id_index` (`role_id`);
+
+--
+-- Index pour la table `roles`
+--
+ALTER TABLE `roles`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `roles_name_unique` (`name`);
+
+--
+-- Index pour la table `settings`
+--
+ALTER TABLE `settings`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `settings_key_unique` (`key`);
+
+--
+-- Index pour la table `translations`
+--
+ALTER TABLE `translations`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `translations_table_name_column_name_foreign_key_locale_unique` (`table_name`,`column_name`,`foreign_key`,`locale`);
+
+--
+-- Index pour la table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `users_email_unique` (`email`),
+  ADD KEY `users_role_id_foreign` (`role_id`);
+
+--
+-- Index pour la table `user_metas`
+--
+ALTER TABLE `user_metas`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `user_roles`
+--
+ALTER TABLE `user_roles`
+  ADD PRIMARY KEY (`user_id`,`role_id`),
+  ADD KEY `user_roles_user_id_index` (`user_id`),
+  ADD KEY `user_roles_role_id_index` (`role_id`);
+
+--
+-- AUTO_INCREMENT pour les tables déchargées
+--
+
+--
+-- AUTO_INCREMENT pour la table `articles`
+--
+ALTER TABLE `articles`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT pour la table `categories_blogs`
+--
+ALTER TABLE `categories_blogs`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT pour la table `comments`
+--
+ALTER TABLE `comments`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `contactform`
+--
+ALTER TABLE `contactform`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `data_rows`
+--
+ALTER TABLE `data_rows`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+
+--
+-- AUTO_INCREMENT pour la table `data_types`
+--
+ALTER TABLE `data_types`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT pour la table `failed_jobs`
+--
+ALTER TABLE `failed_jobs`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `menus`
+--
+ALTER TABLE `menus`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT pour la table `menu_items`
+--
+ALTER TABLE `menu_items`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT pour la table `migrations`
+--
+ALTER TABLE `migrations`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
+--
+-- AUTO_INCREMENT pour la table `permissions`
+--
+ALTER TABLE `permissions`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+
+--
+-- AUTO_INCREMENT pour la table `roles`
+--
+ALTER TABLE `roles`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT pour la table `settings`
+--
+ALTER TABLE `settings`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT pour la table `translations`
+--
+ALTER TABLE `translations`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT pour la table `user_metas`
+--
+ALTER TABLE `user_metas`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- Contraintes pour les tables déchargées
@@ -607,8 +853,3 @@ ALTER TABLE `users`
 ALTER TABLE `user_roles`
   ADD CONSTRAINT `user_roles_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `user_roles_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
-COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
