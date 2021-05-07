@@ -139,7 +139,7 @@
                             <a href="{{ route('home') }}" class="nav-link">Accueil</a>
                         </li>
                         <li class="nav-item {{ $page == "A Propos" ? 'active' : '' }}">
-                            <a href="#" class="nav-link">A Propos</a>
+                            <a href="{{ route('a_propos') }}" class="nav-link">A Propos</a>
                         </li>
                         <li class="nav-item {{ $page == "Formations" ? 'active' : '' }}">
                             <a href="#" class="nav-link">Formations</a>

@@ -43,7 +43,9 @@ data-effects="parallax-background blend-background">
             <div class="col-md-6 col-lg-5 order-1 order-md-0">
                 <a href="{{route('home')}}" class="text-white">Accueil</a>
                 <span class="text-white">&nbsp;>&nbsp;</span>
-                <a href="" class="text-white">Blog</a>
+                <a href="{{route('blog')}}" class="text-white">Blog</a>
+                <span class="text-white">&nbsp;>&nbsp;</span>
+                <a href="" class="text-white">{{ $articles[0]->categorie->nom }}</a>
             </div>
         </div>
     </div>
@@ -71,7 +73,7 @@ data-effects="parallax-background blend-background">
                                 style="width: 100%;height:191px;object-fit:cover;">
                         </a>
                         <div class="card-img-overlay" style="z-index: 10;box-shadow: inset 0 0 0 2000px rgb(6 48 66 / 35%);width: 100%;height:191px;">
-                            <a href="{{ route('blog_category', ['slug' => $article->categorie->slug]) }}" class="btn btn-light btn-sm">{{ $article->categorie->nom }}</a>
+                            <a href="#" class="btn btn-light btn-sm">{{ $article->categorie->nom }}</a>
                         </div>
                         <div class="card-body" style="z-index: 13;">
                             <h4 class="card-title">

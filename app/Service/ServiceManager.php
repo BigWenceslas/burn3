@@ -114,20 +114,37 @@ class ServiceManager
         return $articles;
     }
 
+    public function getLastFiveArticles(){
+        $articles = Article::with('auteur','categorie')->orderBy('created_at', 'desc')->take(5)->get();
+        return $articles;
+    }
+
+    public function getArticlesByCategory($slug){
+        $articles = Article::with('auteur','categorie')
+        ->whereHas('categorie', function($q) use($slug){
+            $q->where('slug', '=', $slug);
+        })
+        ->orderBy('created_at', 'desc')
+        ->take(5)
+        ->get();
+        return $articles;
+    }
+
     public function getDetailsArticles($slug){
-        $articles = Article::with('auteur','categorie')->where('slug',$slug)->get();
+        $articles = Article::with('auteur','categorie','comments')->where('slug',$slug)->get();
+        Article::where('id',$articles[0]->id)->update(['vues'=> $articles[0]->vues+1]);
         return $articles[0];
     }
 
     public function Comment($request){
-        $contact = Comment::create([
-            'nom' => $request['nom'],
+        $comment = Comment::create([
+            'name' => $request['nom'],
             'email' => $request['email'],
             'comment'=> $request['comment'],
             'article_id'=> $request['id']
         ]);
         $article = Article::find($request['id']);
-        $result = array('type' => 'success', 'message' => "Commentaire enregistré avec succès !", 'data' => ["nom"=>$request['nom'],"email"=>$request['email'],"message"=>$request['message'], "comment"=>$request['comment'], "article"=>$article->nom, "article_slug"=>$article->slug]);
+        $result = array('type' => 'success', 'message' => "Commentaire enregistré avec succès !", 'data' => ["name"=>$request['nom'],"email"=>$request['email'],"message"=>$request['message'], "comment"=>$request['comment'], "article"=>$article->nom, "article_slug"=>$article->slug], 'comment' => $comment);
         return json_encode($result);
     }
 

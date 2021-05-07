@@ -19,6 +19,9 @@ Route::get('/contact', 'ContactController@index')->name('contact');
 
 Route::get('/blog', 'BlogController@index')->name('blog');
 Route::get('/blog/{slug}', 'BlogController@details')->name('blog_details');
+Route::get('/blog-category/{slug}', 'BlogController@blog_category')->name('blog_category');
+
+Route::get('/a-propos', 'AproposController@index')->name('a_propos');
 
 Route::get('/login', 'AuthenticationController@index_login')->name('login');
 Route::get('/register', 'AuthenticationController@index_register')->name('register');

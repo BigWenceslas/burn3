@@ -35,11 +35,19 @@ class BlogController extends Controller
         return view('front.blog.index',compact('page','articles'));
     }
 
+    public function blog_category($slug)
+    {
+        $page = "Catégorie";
+        $articles = $this->service->getArticlesByCategory($slug);
+        return view('front.blog.category_article',compact('page','articles'));
+    }
+
     public function details($slug)
     {
         $page = "Blog";
         $article = $this->service->getDetailsArticles($slug);
-        return view('front.blog.details',compact('page','article'));
+        $articles = $this->service->getLastFiveArticles();
+        return view('front.blog.details',compact('page','article','articles'));
     }
 
     public function Comment(Request $request) 
@@ -48,7 +56,7 @@ class BlogController extends Controller
         if (json_decode($contact)->type != "error") {
             $data = array('emails' => [0=>array(
                 'subject'=>'Article commenté',
-                'name'=>json_decode($contact)->data->nom,
+                'name'=>json_decode($contact)->data->name,
                 'email'=>json_decode($contact)->data->email,
                 'body'=>'
                 <td style="text-align: justify;">
@@ -56,7 +64,7 @@ class BlogController extends Controller
                         <img src="https://image.freepik.com/vecteurs-libre/logo-code-degrade-pour-developpeurs-web_23-2148830996.jpg" style="width:8rem;height:auto;">
                     </div>
                   <h1>Merci de nous avoir contacté</h1>
-                  <h2>Hello <strong>'.json_decode($contact)->data->nom.'</strong>, <br>
+                  <h2>Hello <strong>'.json_decode($contact)->data->name.'</strong>, <br>
                   Votre commentaire a bien été envoyé pour l\'article <a href="http://localhost:8000/blog/'.json_decode($contact)->data->article_slug.'">'.json_decode($contact)->data->article.'</a></h2>
                 </td>'
             )]);
